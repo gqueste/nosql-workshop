@@ -1,0 +1,13 @@
+# Temp files
+*~
+
+# Maven
+target/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Jenv configuration (see http://www.jenv.be/)
+.java-version
