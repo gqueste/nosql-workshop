@@ -241,9 +241,7 @@ Des liens existent entre les trois jeux de données :
 
 ### Import des données dans MongoDB
 
-La première tâche consiste à créer la collection des installations sportives à partir des trois fichiers CSV, en utilisant le driver MongoDB natif Java.
-
-Pour cela, recherchez les `TODO` dans le code du module `batch`, complétez le code pour obtenir des documents de cette forme :
+La première tâche consiste à créer la collection des installations sportives à partir des trois fichiers CSV, en utilisant le driver MongoDB natif Java (package `nosql.workshop.batch.mongodb`).
 
 ```javascript
 {
@@ -284,12 +282,9 @@ Pour cela, recherchez les `TODO` dans le code du module `batch`, complétez le c
 
 ### Services Java
 
-La seconde tâche consiste à implémenter les services Java utilisés par les pages web de l'application.
-
-Pour cela, recherchez les `TODO` dans le code du module `application` et complétez le code manquant.
+La seconde tâche consiste à implémenter les services Java utilisés par les pages web de l'application (package `nosql.workshop.services`).
 
 L'application web propose une page "API Checkup" permettant de vérifier que les services répondent correctement.
-
 
 ### Recherche full-text
 
@@ -335,7 +330,6 @@ db.installations.find(
 ##### Création du mapping
 On crée d'abord le mapping. Dans cette première version, nous nous contenterons d'un mapping simple : 
 
-```javascript
 	curl -XPOST 'http://localhost:9200/installations' -d '{
 		"mappings": {
 			"installation": {
@@ -351,17 +345,17 @@ On crée d'abord le mapping. Dans cette première version, nous nous contenteron
 			}
 		}
 	}'
-```
 
 #### Import des données dans Elasticsearch
 
-Le job **MongoDbToElasticsearch** a pour objectif de gérer la copie des données de MongoDB à ElasticSearch. Nous ne cherchons pas ici à gérer une mise à jour incrémentale des données. 
+Créer le job **MongoDbToElasticsearch** qui a pour objectif de gérer la copie des données de MongoDB à ElasticSearch. Nous ne cherchons pas ici à gérer une mise à jour incrémentale des données.
 
 Nous souhaitons extraire l'ensemble des données de la collection `installations` et les écrire dans l'index `installations` (type `installation`). Afin d'éviter pour le moment des problèmes de conversion de dates, nous filtrerons la propriété `dateMiseAJourFiche` avant l'insersion dans **ElasticSearch**.
 
+### Recherche Full-Text
+
 Une fois les documents indexés dans ElasticSearch, nous pouvons lancer recherche full text : 
 
-```javascript
 	curl -XPOST 'http://localhost:9200/installations/installation/_search' -d '{
 	    "query": {
 	        "multi_match": {
@@ -370,7 +364,15 @@ Une fois les documents indexés dans ElasticSearch, nous pouvons lancer recherch
 	        }
 	    }
 	}'
-```
+
+Vous devez à présent, dans l'application, gérer la recherche à l'aide d'ElasticSearch.
+Votre recherche doit tenir compte de la langue (ici le français) afin de proposer les meilleurs
+résultats possibles. Par exemple, quand je cherche la chaîne **"fotbal"**, je m'attends à trouver
+les terrains de football.
+
+### Suggestion
+Vous devez, en utilisant l'API `_suggest` d'ElasticSearch, implémenter la suggestion des villes
+en fonction des caractères tapés par l'utilisateur.
 
 ### Recherche géographique
 
@@ -401,7 +403,6 @@ db.installations.find({ "location" :
 
 Pour effectuer la même requête dans ElasticSearch : 
 
-```javascript
 	curl -XPOST 'http://localhost:9200/installations/installation/_search' -d '{
 		"query" : {
 			"filtered" : {
@@ -417,4 +418,4 @@ Pour effectuer la même requête dans ElasticSearch :
 			}
 	    }
 	}'
-```
+
