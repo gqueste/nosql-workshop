@@ -17,18 +17,18 @@ Dans tous les cas, n'hésitez pas à vous référer à la [documentation officie
 
 ### Installation
 
-Téléchargez la dernière version stable de MongoDB sur [mongodb.org/downloads](https://www.mongodb.org/downloads). Ce workshop est basé sur la version 2.6.6 de MongoDB.
+Téléchargez la dernière version stable de MongoDB sur [mongodb.org/downloads](https://www.mongodb.org/downloads) correspondant à votre système d'exploitation. Ce workshop est basé sur la version 3.2.1 de MongoDB.
 
-Dézippez le bundle dans le dossier de votre choix, par exemple `$HOME/progz/mongodb-2.6.6`.
+Dézippez le bundle dans le dossier de votre choix, par exemple `$HOME/progz/mongodb-3.2.1`.
 
-Les exécutables nécessaires au fonctionnement de MongoDB se trouvent dans le dossier `$HOME/progz/mongodb-2.6.6/bin`.
+Les exécutables nécessaires au fonctionnement de MongoDB se trouvent dans le dossier `$HOME/progz/mongodb-3.2.1/bin`.
 
 Pour plus de facilités, vous pouvez ajouter ce dossier à votre `PATH`, afin que les commandes `mongod` et `mongo` soient directement accessibles.
 Par exemple sous Linux, ajoutez les lignes suivantes à votre fichier `.profile` :
 
 ```bash
 # Path to MongoDB binaries
-PATH="$HOME/progz/mongodb-2.6.6/bin:$PATH"
+PATH="$HOME/progz/mongodb-3.2.1/bin:$PATH"
 export PATH
 ```
 
@@ -117,7 +117,7 @@ La méthode `find()` possède deux paramètres (optionnels) :
 Par exemple, pour rechercher toutes les personnes se nommant "DUPONT" :
 
 ```javascript
-db.personnes.find({ "nom" : "DUPONT" })
+	db.personnes.find({ "nom" : "DUPONT" })
 ```
 
 Si vous ne souhaitez retourner que les noms et prénoms, sans l'identifiant, utilisez une projection (deuxième paramètre de la méthode `find()`) :
@@ -154,6 +154,8 @@ db.personnes.update({"age" : { "$lt" : 40 }}, {"$set" : {"categorie" : "Junior"}
 ```
 
 Remarque : MongoDB a créé automatiquement l'attribut "categorie" qui n'existait pas auparavant !
+
+Remarque 2 : depuis MongoDB 3.2, la commande `updateMany()` peut être utilisée pour éviter d'avoir à préciser `{"multi" : true}` en option de l'instruction `update`. Essayez ! :-)
 
 #### Suppression
 
@@ -209,6 +211,22 @@ Pour enlever une compétence :
 ```javascript
 db.personnes.update({ "_id" : "jdupont" }, {"$pull" : {"competences" : "CSS"}})
 ```
+
+Pour limiter le nombre de compétences à 3 (plus détails [ici](https://docs.mongodb.org/manual/tutorial/limit-number-of-elements-in-updated-array/)) :
+```javascript
+db.personnes.update(
+   { "_id" : "jdupont" },
+   {
+     $push: {
+        "competences": {
+           $each: [ "Javascript", "Scala" ],
+           $slice: -3
+        }
+     }
+   }
+)
+```
+ 
 
 ## Prise en main d'Elasticsearch
 Avant de démarrer : 
