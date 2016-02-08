@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * API REST qui expose les services liés aux villes
  */
-public class TownRessource {
+public class TownResource {
 
 
     @Inject
-    public TownRessource() {
+    public TownResource() {
     }
 
     @Get("suggest/:text")

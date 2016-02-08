@@ -370,6 +370,11 @@ Créer le job **MongoDbToElasticsearch** qui a pour objectif de gérer la copie 
 
 Nous souhaitons extraire l'ensemble des données de la collection `installations` et les écrire dans l'index `installations` (type `installation`). Afin d'éviter pour le moment des problèmes de conversion de dates, nous filtrerons la propriété `dateMiseAJourFiche` avant l'insersion dans **ElasticSearch**.
 
+#### Villes des Pays de Loire
+
+Créer un job **ImportTowns** qui permet d'importer les villes qui fournies dans le fichier `towns_paysdeloire.csv`,
+qui seront accessibles via **TownResource**.
+
 ### Recherche Full-Text
 
 Une fois les documents indexés dans ElasticSearch, nous pouvons lancer recherche full text : 
