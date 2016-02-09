@@ -12,6 +12,7 @@ import io.searchbox.core.Bulk;
 import io.searchbox.core.Index;
 import nosql.workshop.connection.ESConnectionUtil;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -19,7 +20,7 @@ import java.util.*;
  */
 public class MongoDBToElasticSearch {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
 
         MongoClient mongoClient = new MongoClient("localhost", 27017);
         DB db = mongoClient.getDB("nosql-workshop");
@@ -34,7 +35,11 @@ public class MongoDBToElasticSearch {
                 .addAction(getListBulkable(cursor))
                 .build();
 
-        client.execute(bulk);
+        try {
+            client.execute(bulk);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -49,11 +54,9 @@ public class MongoDBToElasticSearch {
     }
 
     private static Index createIndex(DBObject object){
-        Map<String, Object> source = new HashMap<String, Object>();
         String id = object.get("_id").toString();
         object.removeField("_id");
         object.removeField("dateMiseAJourFiche");
-        source.put("installation", object);
         return new Index.Builder(object).id(id).build();
 
     }
