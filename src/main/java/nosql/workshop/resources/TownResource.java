@@ -24,7 +24,12 @@ public class TownResource {
     @Get("suggest/:text")
     public List<TownSuggest> suggest(String text) {
 
-        return searchService.suggest(text);
+        try {
+            return searchService.suggest(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Get("location/:townName")
