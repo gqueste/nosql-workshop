@@ -9,6 +9,7 @@ import nosql.workshop.model.stats.Average;
 import nosql.workshop.model.stats.CountByActivity;
 import nosql.workshop.model.stats.InstallationsStats;
 import org.jongo.MongoCollection;
+import org.jongo.marshall.jackson.oid.MongoId;
 
 import java.net.UnknownHostException;
 import java.util.List;
@@ -74,6 +75,7 @@ public class InstallationService {
 	}
 
 	public static class IdResult {
+		@MongoId
 		public String id;
 	}
 
