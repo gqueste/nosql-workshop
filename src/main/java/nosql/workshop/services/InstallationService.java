@@ -9,7 +9,6 @@ import nosql.workshop.model.stats.Average;
 import nosql.workshop.model.stats.CountByActivity;
 import nosql.workshop.model.stats.InstallationsStats;
 import org.jongo.MongoCollection;
-import org.jongo.marshall.jackson.oid.MongoId;
 
 import java.net.UnknownHostException;
 import java.util.List;
@@ -53,8 +52,8 @@ public class InstallationService {
 
 		IdResult result = installations.aggregate("{ $unwind : \"$equipements\" }")
 				                  .and("{ $group : { _id : \"$_id\", len : { $sum : 1 } } }")
-								  .and("{ $sort : { len : -1 } }")
-								  .and("{ $project: {\"_id\":1} }")
+				                  .and("{ $sort : { len : -1 } }")
+				                  .and("{ $project: {\"_id\":1} }")
 				                  .and("{ $limit :1 }")
 				                  .as(IdResult.class).next();
 
@@ -70,12 +69,11 @@ public class InstallationService {
 		float lng = Float.valueOf(context.query().get("lng"));
 		float lat = Float.valueOf(context.query().get("lat"));
 		int distance = Integer.valueOf(context.query().getInteger("distance"));
-		String query = "{location : { $near : { $geometry : { type : \"Point\", coordinates : [ "+lng+", "+lat+" ]}, $maxDistance : "+distance+"}}}";
+		String query = "{location : { $near : { $geometry : { type : \"Point\", coordinates : [ " + lng + ", " + lat + " ]}, $maxDistance : " + distance + "}}}";
 		return Lists.newArrayList(installations.find(query).as(Installation.class).iterator());
 	}
 
 	public static class IdResult {
-		@MongoId
 		public String id;
 	}
 

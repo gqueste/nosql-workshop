@@ -23,6 +23,7 @@ public class InstallationResource {
 
 
     @Get("/")
+    @Get("")
     public List<Installation> list(Context context) {
         return installationService.getAll(context);
     }
