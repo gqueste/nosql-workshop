@@ -67,8 +67,11 @@ public class InstallationService {
 	}
 
 	public List<Installation> geoSearch(Context context) {
-		//db.installations.find({location : { $near : { $geometry : { type : "Point", coordinates : [ -1.5, 47.3 ]}, $maxDistance : 1000}}})`
-		return null;
+		float lng = Float.valueOf(context.query().get("lng"));
+		float lat = Float.valueOf(context.query().get("lat"));
+		int distance = Integer.valueOf(context.query().getInteger("distance"));
+		String query = "{location : { $near : { $geometry : { type : \"Point\", coordinates : [ "+lng+", "+lat+" ]}, $maxDistance : "+distance+"}}}";
+		return Lists.newArrayList(installations.find(query).as(Installation.class).iterator());
 	}
 
 	public static class IdResult {
