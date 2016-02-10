@@ -104,7 +104,11 @@ public class CsvToMongoDb {
 	}
 
 	private static String cleanData(String data) {
-		return data.matches("\".*\"") ? data.substring(1, data.length() - 1).trim() : data.trim();
+		String dataCleaned = data.matches("\".*\"") ? data.substring(1, data.length() - 1).trim() : data.trim();
+		if(dataCleaned.startsWith("\"")){
+			dataCleaned = dataCleaned.substring(1);
+		}
+		return dataCleaned;
 	}
 
 	private static boolean parseMultiCommune(String s) {
