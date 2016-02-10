@@ -1,19 +1,14 @@
 package nosql.workshop.batch.mongodb;
 
 import com.mongodb.*;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import io.searchbox.action.BulkableAction;
 import io.searchbox.client.JestClient;
-import io.searchbox.client.JestClientFactory;
-import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Bulk;
 import io.searchbox.core.Index;
 import nosql.workshop.connection.ESConnectionUtil;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Gabriel QUESTE & Quentin VICTOOR on 09/02/2016.

@@ -10,7 +10,9 @@ import nosql.workshop.connection.ESConnectionUtil;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Gabriel QUESTE & Quentin VICTOOR on 09/02/2016.
@@ -20,7 +22,7 @@ public class TownToElasticSearch {
     public static void main(String[] args){
 
         List<DBObject> dbObjectList = new ArrayList<>();
-        List<String[]> myEntries = readCSV("src\\main\\resources\\batch\\csv\\towns_paysdeloire.csv");
+        List<String[]> myEntries = readCSV("src/main/resources/batch/csv/towns_paysdeloire.csv");
         myEntries.stream()
                 .skip(1)
                 .forEach(columns -> {
