@@ -13,7 +13,7 @@ import java.util.*;
 public class CsvToMongoDb {
 
 	public static MongoClient mongoClient = new MongoClient("localhost", 27017);
-	public static MongoDatabase mongoDatabase = mongoClient.getDatabase("workshop");
+	public static MongoDatabase mongoDatabase = mongoClient.getDatabase("nosql-workshop");
 
 	public static void main(String[] args) {
 

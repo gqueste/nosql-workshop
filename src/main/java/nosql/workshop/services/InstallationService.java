@@ -48,22 +48,27 @@ public class InstallationService {
 				                                            .and("{$project: {activite: \"$_id\", total : 1}}")
 				                                            .as(CountByActivity.class).iterator()));
 
-		stats.setAverageEquipmentsPerInstallation(installations.aggregate("{$unwind: \"$equipements\"}")
-				                                          .and("{$group: {_id: \"$nom\", sum:{$sum : 1}}}")
-				                                          .and("{$group: {_id: 0, average:{$avg : \"$sum\"}}}")
+		stats.setAverageEquipmentsPerInstallation(installations.aggregate("{$group: {_id: null, average : { $avg : { $size : \"$equipements\"}}}}")
 				                                          .as(Average.class).next().getAverage());
 
 		IdResult result = installations.aggregate("{ $unwind : \"$equipements\" }")
 				                  .and("{ $group : { _id : \"$_id\", len : { $sum : 1 } } }")
+								  .and("{ $sort : { len : -1 } }")
 								  .and("{ $project: {\"_id\":1} }")
 				                  .and("{ $limit :1 }")
 				                  .as(IdResult.class).next();
+
 		stats.setInstallationWithMaxEquipments(this.get(result.id));
 		return stats;
 	}
 
 	public Installation get(String id) {
 		return installations.findOne("{_id : '" + id + "'}").as(Installation.class);
+	}
+
+	public List<Installation> geoSearch(Context context) {
+		//db.installations.find({location : { $near : { $geometry : { type : "Point", coordinates : [ -1.5, 47.3 ]}, $maxDistance : 1000}}})`
+		return null;
 	}
 
 	public static class IdResult {
